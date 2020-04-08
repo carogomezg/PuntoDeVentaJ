@@ -7,10 +7,17 @@ package punto_de_venta;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,32 +25,89 @@ import javax.swing.Timer;
  */
 public class FramePV extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FramePV
-     */
+    Conexion poss = new Conexion();
+    Connection conn = poss.conexion();
+    boolean masCantidad = false;
+
     public FramePV() {
         initComponents();
         setExtendedState(FramePV.MAXIMIZED_BOTH);
-        
+
         Date date = new Date();
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-YYYY");
-        fecha.setText(formato.format(date));
-        
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/YYYY");
+        setMonth(formato.format(date));
         Timer time = new Timer(100, new FramePV.horas());
         time.start();
-        
+        setTableModel();
     }
-    
+
+    public void setMonth(String fechaC) {
+        String[] dato = fechaC.split("/");
+        String dia = dato[0];
+        String year = dato[2];
+        String mes = "";
+        switch (dato[1]) {
+            case "01":
+                mes = "Enero";
+                break;
+
+            case "02":
+                mes = "Febrero";
+                break;
+
+            case "03":
+                mes = "Marzo";
+                break;
+
+            case "04":
+                mes = "Abril";
+                break;
+
+            case "05":
+                mes = "Mayo";
+                break;
+
+            case "06":
+                mes = "Junio";
+                break;
+
+            case "07":
+                mes = "Julio";
+                break;
+
+            case "08":
+                mes = "Agosto";
+                break;
+
+            case "09":
+                mes = "Septiembre";
+                break;
+
+            case "10":
+                mes = "Octubre";
+                break;
+
+            case "11":
+                mes = "Noviembre";
+                break;
+
+            case "12":
+                mes = "Diciembre";
+                break;
+        }
+        fecha.setText(dia + "/" + mes + "/" + year);
+    }
+
     class horas implements ActionListener {
-        
-         public void actionPerformed(ActionEvent e) {
-             Date hours = new Date();
-             String pmAm = "hh:mm:ss a";
-             SimpleDateFormat format = new SimpleDateFormat(pmAm);
-             Calendar hoy = Calendar.getInstance();
-             hora.setText(String.format(format.format(hours), hoy));
-         }
-                
+
+        public void actionPerformed(ActionEvent e) {
+            Date hours = new Date();
+            String pmAm = "hh:mm:ss a";
+            SimpleDateFormat format = new SimpleDateFormat(pmAm);
+            Calendar hoy = Calendar.getInstance();
+            hora.setText(String.format(format.format(hours), hoy));
+        }
+
     }
 
     /**
@@ -61,8 +125,8 @@ public class FramePV extends javax.swing.JFrame {
         hora = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        tablaVenta = new javax.swing.JTable();
+        textoVenta = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -100,7 +164,7 @@ public class FramePV extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(30, 20, 80, 70);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -119,18 +183,25 @@ public class FramePV extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(tablaVenta);
+        if (tablaVenta.getColumnModel().getColumnCount() > 0) {
+            tablaVenta.getColumnModel().getColumn(0).setResizable(false);
+            tablaVenta.getColumnModel().getColumn(1).setResizable(false);
+            tablaVenta.getColumnModel().getColumn(2).setResizable(false);
+            tablaVenta.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(50, 120, 1200, 440);
-        jPanel1.add(jTextField1);
-        jTextField1.setBounds(120, 590, 840, 60);
+
+        textoVenta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        textoVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoVentaKeyPressed(evt);
+            }
+        });
+        jPanel1.add(textoVenta);
+        textoVenta.setBounds(120, 590, 840, 60);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_carrito.png"))); // NOI18N
         jPanel1.add(jLabel4);
@@ -176,6 +247,135 @@ public class FramePV extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public void setTableModel() {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                if (columnas == 9) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Cantidad");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Total");
+
+        tablaVenta.setModel(modelo);
+    }
+
+    public void checkPurchase(String codigo, String cantidad) {
+        String query = "SELECT precio, nombre FROM Productos WHERE codigo = '" + codigo + "'";
+        double precio = 0;
+        String nombre = "";
+        DefaultTableModel modelo = (DefaultTableModel) tablaVenta.getModel();
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                precio = rs.getInt(1);
+                nombre = rs.getString(2);
+            }
+
+            if (isExist(nombre)) {
+                int row = getRowDuplicated(nombre);
+                String cant = tablaVenta.getValueAt(row, 1).toString();
+                int c = Integer.parseInt(cant) + Integer.parseInt(cantidad);
+                cantidad = String.valueOf(c);
+                double total = precio * Integer.parseInt(cantidad);
+                modelo.setValueAt(cantidad, row, 1);
+                modelo.setValueAt(total, row, 3);
+            } else {
+                double total = precio * Integer.parseInt(cantidad);
+                Object[] row = {nombre, cantidad, precio, total};
+                modelo.addRow(row);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error");
+        }
+    }
+
+    public boolean isExist(String nombre) {
+        boolean existe = false;
+        int rows = tablaVenta.getRowCount();
+        if (rows > 0) {
+            for (int i = 0; i < rows; i++) {
+                String nom = tablaVenta.getValueAt(i, 0).toString();
+                if (nom.equals(nombre)) {
+                    existe = true;
+                    break;
+                } else {
+                    existe = false;
+                }
+            }
+        }
+        return existe;
+    }
+
+    public int getRowDuplicated(String nombre) {
+        int row = -1;
+        int rows = tablaVenta.getRowCount();
+        if (rows > 0) {
+            for (int i = 0; i < rows; i++) {
+                String nom = tablaVenta.getValueAt(i, 0).toString();
+                if (nom.equals(nombre)) {
+                    row = i;
+                    break;
+                } else {
+
+                }
+            }
+        }
+        return row;
+    }
+
+    public String getCode(String cadena) {
+        String datos[] = cadena.split("\\*");
+        String code = "";
+        if (datos.length == 2) {
+            if (datos[0].length() == 13) {
+                code = datos[0];
+            } else {
+                code = datos[1];
+            }
+        } else if (datos.length > 2) {
+            code = "";
+        } else if (datos.length < 2) {
+            code = cadena;
+        }
+        return code;
+    }
+
+    public String getQuantity(String cadena) {
+        String quantity = "";
+        String datos[] = cadena.split("\\*");
+        if (datos.length == 2) {
+            if (datos[0].length() == 13) {
+                quantity = datos[1];
+            } else {
+                quantity = datos[0];
+            }
+        } else if (datos.length > 2) {
+            JOptionPane.showMessageDialog(null, "ERROR EN LA VENTA, VERIFIQUE LA SINTAXIS DE LA COMPRA\nPUEDE CONSULTAR LA GUIA DE USO");
+            quantity = "";
+        } else if (datos.length < 2) {
+            quantity = "1";
+        }
+        return quantity;
+    }
+
+    private void textoVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoVentaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String venta = textoVenta.getText();
+            String codigo = getCode(venta);
+            String cantidad = getQuantity(venta);
+            checkPurchase(codigo, cantidad);
+        }
+    }//GEN-LAST:event_textoVentaKeyPressed
 
     /**
      * @param args the command line arguments
@@ -225,7 +425,7 @@ public class FramePV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tablaVenta;
+    private javax.swing.JTextField textoVenta;
     // End of variables declaration//GEN-END:variables
 }
