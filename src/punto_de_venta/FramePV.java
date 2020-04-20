@@ -5,6 +5,7 @@
  */
 package punto_de_venta;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,6 +35,8 @@ public class FramePV extends javax.swing.JFrame {
     public FramePV() {
         initComponents();
         setExtendedState(FramePV.MAXIMIZED_BOTH);
+        borrar.setBackground(new java.awt.Color(60, 92, 108));
+        vender.setBackground(new java.awt.Color(60, 92, 108));
 
         Date date = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/YYYY");
@@ -127,11 +132,16 @@ public class FramePV extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVenta = new javax.swing.JTable();
         textoVenta = new javax.swing.JTextField();
+        salir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        borrar = new javax.swing.JButton();
+        vender = new javax.swing.JButton();
+        ayuda = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,10 +153,10 @@ public class FramePV extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel3.setText("Sistema Punto de Venta");
+        jLabel3.setForeground(new java.awt.Color(27, 58, 68));
+        jLabel3.setText("Punto de Venta - Tiendita GOOR2");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(410, 40, 420, 40);
+        jLabel3.setBounds(390, 40, 580, 40);
 
         fecha.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         fecha.setForeground(new java.awt.Color(51, 51, 51));
@@ -192,7 +202,7 @@ public class FramePV extends javax.swing.JFrame {
         }
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(50, 120, 1200, 440);
+        jScrollPane1.setBounds(50, 120, 980, 430);
 
         textoVenta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         textoVenta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -201,47 +211,88 @@ public class FramePV extends javax.swing.JFrame {
             }
         });
         jPanel1.add(textoVenta);
-        textoVenta.setBounds(120, 590, 840, 60);
+        textoVenta.setBounds(120, 590, 910, 60);
+
+        salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_close.png"))); // NOI18N
+        salir.setMaximumSize(new java.awt.Dimension(40, 40));
+        salir.setMinimumSize(new java.awt.Dimension(40, 40));
+        salir.setPreferredSize(new java.awt.Dimension(40, 40));
+        salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(salir);
+        salir.setBounds(1270, 0, 30, 30);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_carrito.png"))); // NOI18N
         jPanel1.add(jLabel4);
         jLabel4.setBounds(50, 590, 60, 60);
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 51));
-        jLabel5.setText("TOTAL =");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(1130, 590, 110, 30);
-
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_1moneyicon.png"))); // NOI18N
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(1060, 590, 60, 60);
+        jLabel6.setBounds(1080, 360, 60, 60);
+
+        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 51)));
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("TOTAL =");
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(1130, 620, 110, 30);
-
-        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 51)));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(78, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 98, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(1050, 570, 200, 100);
+        jPanel2.setBounds(1070, 340, 200, 100);
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_tiendita_gor2.png"))); // NOI18N
+        jLabel8.setMaximumSize(new java.awt.Dimension(130, 123));
+        jLabel8.setMinimumSize(new java.awt.Dimension(130, 123));
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(1050, 30, 130, 123);
+
+        borrar.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        borrar.setForeground(new java.awt.Color(255, 255, 255));
+        borrar.setText("Borrar");
+        jPanel1.add(borrar);
+        borrar.setBounds(1110, 250, 130, 50);
+
+        vender.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        vender.setForeground(new java.awt.Color(255, 255, 255));
+        vender.setText("Terminar la Venta");
+        jPanel1.add(vender);
+        vender.setBounds(1080, 480, 180, 50);
+
+        ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_signo.jpg"))); // NOI18N
+        jPanel1.add(ayuda);
+        ayuda.setBounds(1240, 0, 30, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(40, 30, 1300, 700);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg2.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3 (2).jpg"))); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 0, 1370, 770);
 
@@ -377,6 +428,21 @@ public class FramePV extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textoVentaKeyPressed
 
+    private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
+        // TODO add your handling code here:
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(
+            "Arial", Font.BOLD, 14)));
+
+int opcion = JOptionPane.showConfirmDialog(
+    rootPane, "¿Desea realmente salir del sistema?",
+    "Salir del sistema", JOptionPane.YES_NO_OPTION
+    );
+
+    if (opcion == JOptionPane.YES_OPTION) {
+        System.exit(0);
+        }
+    }//GEN-LAST:event_salirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -413,6 +479,8 @@ public class FramePV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ayuda;
+    private javax.swing.JButton borrar;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel hora;
     private javax.swing.JLabel jLabel1;
@@ -422,10 +490,13 @@ public class FramePV extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton salir;
     private javax.swing.JTable tablaVenta;
     private javax.swing.JTextField textoVenta;
+    private javax.swing.JButton vender;
     // End of variables declaration//GEN-END:variables
 }
