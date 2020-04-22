@@ -16,11 +16,17 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -44,6 +50,8 @@ public class FramePV extends javax.swing.JFrame {
         Timer time = new Timer(100, new FramePV.horas());
         time.start();
         setTableModel();
+        textoAdv.setVisible(false);
+        textoAdv2.setVisible(false);
     }
 
     public void setMonth(String fechaC) {
@@ -137,11 +145,13 @@ public class FramePV extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        eTotal = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         borrar = new javax.swing.JButton();
         vender = new javax.swing.JButton();
         ayuda = new javax.swing.JButton();
+        textoAdv = new javax.swing.JLabel();
+        textoAdv2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -240,8 +250,9 @@ public class FramePV extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("TOTAL =");
 
-        jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        eTotal.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        eTotal.setForeground(new java.awt.Color(255, 255, 255));
+        eTotal.setText("0.0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -251,7 +262,7 @@ public class FramePV extends javax.swing.JFrame {
                 .addContainerGap(78, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(eTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -260,7 +271,7 @@ public class FramePV extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(eTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -268,26 +279,51 @@ public class FramePV extends javax.swing.JFrame {
         jPanel2.setBounds(1070, 340, 200, 100);
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_tiendita_gor2.png"))); // NOI18N
-        jLabel8.setMaximumSize(new java.awt.Dimension(130, 123));
-        jLabel8.setMinimumSize(new java.awt.Dimension(130, 123));
         jPanel1.add(jLabel8);
         jLabel8.setBounds(1050, 30, 130, 123);
 
         borrar.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         borrar.setForeground(new java.awt.Color(255, 255, 255));
         borrar.setText("Borrar");
+        borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarActionPerformed(evt);
+            }
+        });
         jPanel1.add(borrar);
         borrar.setBounds(1110, 250, 130, 50);
 
         vender.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         vender.setForeground(new java.awt.Color(255, 255, 255));
         vender.setText("Terminar la Venta");
+        vender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                venderActionPerformed(evt);
+            }
+        });
         jPanel1.add(vender);
         vender.setBounds(1080, 480, 180, 50);
 
         ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rsz_signo.jpg"))); // NOI18N
+        ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ayudaActionPerformed(evt);
+            }
+        });
         jPanel1.add(ayuda);
         ayuda.setBounds(1240, 0, 30, 30);
+
+        textoAdv.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        textoAdv.setForeground(new java.awt.Color(255, 51, 51));
+        textoAdv.setText("NO SE ENCONTRO PRODUCTO");
+        jPanel1.add(textoAdv);
+        textoAdv.setBounds(1040, 590, 240, 50);
+
+        textoAdv2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        textoAdv2.setForeground(new java.awt.Color(255, 51, 51));
+        textoAdv2.setText("VERIFIQUE EL CODIGO");
+        jPanel1.add(textoAdv2);
+        textoAdv2.setBounds(1070, 630, 190, 30);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(40, 30, 1300, 700);
@@ -331,23 +367,40 @@ public class FramePV extends javax.swing.JFrame {
                 nombre = rs.getString(2);
             }
 
-            if (isExist(nombre)) {
-                int row = getRowDuplicated(nombre);
-                String cant = tablaVenta.getValueAt(row, 1).toString();
-                int c = Integer.parseInt(cant) + Integer.parseInt(cantidad);
-                cantidad = String.valueOf(c);
-                double total = precio * Integer.parseInt(cantidad);
-                modelo.setValueAt(cantidad, row, 1);
-                modelo.setValueAt(total, row, 3);
+            if (nombre.length() == 0) {
+                textoAdv.setVisible(true);
+                textoAdv2.setVisible(true);
             } else {
-                double total = precio * Integer.parseInt(cantidad);
-                Object[] row = {nombre, cantidad, precio, total};
-                modelo.addRow(row);
+                textoAdv.setVisible(false);
+                textoAdv2.setVisible(false);
+                if (isExist(nombre)) {
+                    int row = getRowDuplicated(nombre);
+                    String cant = tablaVenta.getValueAt(row, 1).toString();
+                    int c = Integer.parseInt(cant) + Integer.parseInt(cantidad);
+                    cantidad = String.valueOf(c);
+                    double total = precio * Integer.parseInt(cantidad);
+                    modelo.setValueAt(cantidad, row, 1);
+                    modelo.setValueAt(total, row, 3);
+                } else {
+                    double total = precio * Integer.parseInt(cantidad);
+                    Object[] row = {nombre, cantidad, precio, total};
+                    modelo.addRow(row);
+                }
+                total();
             }
-
         } catch (SQLException ex) {
             System.out.println("Error");
         }
+    }
+
+    public void total() {
+        int filas = tablaVenta.getRowCount();
+        double total = 0;
+        for (int i = 0; i < filas; i++) {
+            String tot = tablaVenta.getValueAt(i, 3).toString();
+            total += Double.parseDouble(tot);
+        }
+        eTotal.setText("" + total);
     }
 
     public boolean isExist(String nombre) {
@@ -411,8 +464,8 @@ public class FramePV extends javax.swing.JFrame {
                 quantity = datos[0];
             }
         } else if (datos.length > 2) {
-            JOptionPane.showMessageDialog(null, "ERROR EN LA VENTA, VERIFIQUE LA SINTAXIS DE LA COMPRA\nPUEDE CONSULTAR LA GUIA DE USO");
-            quantity = "";
+            JOptionPane.showMessageDialog(null, "VERIFIQUE LA SINTAXIS DE LA COMPRA.\nPUEDE CONSULTAR LA GUIA DE USO.", "ERROR EN LA VENTA", ERROR_MESSAGE);
+            quantity = "0";
         } else if (datos.length < 2) {
             quantity = "1";
         }
@@ -431,17 +484,61 @@ public class FramePV extends javax.swing.JFrame {
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         // TODO add your handling code here:
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(
-            "Arial", Font.BOLD, 14)));
+                "Arial", Font.BOLD, 14)));
 
-int opcion = JOptionPane.showConfirmDialog(
-    rootPane, "¿Desea realmente salir del sistema?",
-    "Salir del sistema", JOptionPane.YES_NO_OPTION
-    );
+        int opcion = JOptionPane.showConfirmDialog(
+                rootPane, "¿Desea realmente salir del sistema?",
+                "Salir del sistema", JOptionPane.YES_NO_OPTION
+        );
 
-    if (opcion == JOptionPane.YES_OPTION) {
-        System.exit(0);
+        if (opcion == JOptionPane.YES_OPTION) {
+            System.exit(0);
         }
     }//GEN-LAST:event_salirActionPerformed
+
+    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+        if (tablaVenta.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Seleccione una producto para eliminar", "ATENCIÓN", WARNING_MESSAGE);
+        } else {
+            DefaultTableModel model = (DefaultTableModel) tablaVenta.getModel();
+            int selectedRow = tablaVenta.getSelectedRow();
+            model.removeRow(selectedRow);
+            total();
+        }
+    }//GEN-LAST:event_borrarActionPerformed
+
+    private void venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderActionPerformed
+        if (tablaVenta.getRowCount() > 0) {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/images/rsz_pulgar2.png"));
+            JOptionPane.showMessageDialog(null, "Venta registrada con éxito!", "VENTA COMPLETADA", INFORMATION_MESSAGE, icon);
+            setTableModel();
+            textoVenta.setText("");
+            eTotal.setText("");
+            textoAdv.setVisible(false);
+            textoAdv2.setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay productos marcados para vender.", "AVISO", WARNING_MESSAGE);
+        }
+//        FramePV v = new FramePV();
+//        v.setVisible(true);
+//        this.dispose();
+    }//GEN-LAST:event_venderActionPerformed
+
+    private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed
+//        guia v = new guia();
+//        v.setVisible(true);
+        String msg = "Funcionamiento del sistema:\n"
+                + "  •Para poder realizar una venta, es necesario introducir el código del producto y posteriormente presionar la tecla ENTER estando el texto de venta seleccionado. Los códigos en este sistema son de 13 dígitos (EAN-13). Puede utilizar escáner y leer códigos de barras.\n"
+                + "  •Si desea marcar más de una unidad de algun producto es necesario que agregue el carácter (*), puede usar las siguientes combinaciones:\n"
+                + "      XXXXXXXXXXXXX*5 → para 5 unidades del producto con código XX..\n"
+                + "      5*XXXXXXXXXXXXX → para 5 unidades del producto con codigo XX..\n"
+                + "  ****Cualquier otra combinación no funcionara.****\n"
+                + "  \n•Para borrar un producto de la lista de la venta, es necesario que seleccione primero la columna y después presione el botón BORRAR.\n"
+                + "•Para terminar la venta, es necesario que al menos exista un producto marcado.\n"
+                + "•IMPORTANTE: Un espacio en el texto del campo de venta cuenta como un carácter, por lo que sí deja un espacio al principio, al final o entre medio de los caracteres, el sistema no encontrará el producto.\n"
+                + "•Cualquier falla en el sistema, contacte al administrador.";
+        JOptionPane.showMessageDialog(null, msg, "GUIA DE USO", INFORMATION_MESSAGE);
+    }//GEN-LAST:event_ayudaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -481,6 +578,7 @@ int opcion = JOptionPane.showConfirmDialog(
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ayuda;
     private javax.swing.JButton borrar;
+    private javax.swing.JLabel eTotal;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel hora;
     private javax.swing.JLabel jLabel1;
@@ -489,13 +587,14 @@ int opcion = JOptionPane.showConfirmDialog(
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton salir;
     private javax.swing.JTable tablaVenta;
+    private javax.swing.JLabel textoAdv;
+    private javax.swing.JLabel textoAdv2;
     private javax.swing.JTextField textoVenta;
     private javax.swing.JButton vender;
     // End of variables declaration//GEN-END:variables
