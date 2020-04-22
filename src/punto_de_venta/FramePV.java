@@ -52,8 +52,21 @@ public class FramePV extends javax.swing.JFrame {
         setTableModel();
         textoAdv.setVisible(false);
         textoAdv2.setVisible(false);
+//        getCodes();
     }
 
+//    public void getCodes() {
+//        String query = "SELECT codigo FROM Productos";
+//        try {
+//            Statement st = conn.createStatement();
+//            ResultSet rs = st.executeQuery(query);
+//            while(rs.next()) {
+//                System.out.println(rs.getString(1));
+//            }
+//        } catch (SQLException e) {
+//        }
+//    }
+    
     public void setMonth(String fechaC) {
         String[] dato = fechaC.split("/");
         String dia = dato[0];
