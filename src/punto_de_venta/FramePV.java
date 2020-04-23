@@ -52,6 +52,7 @@ public class FramePV extends javax.swing.JFrame {
         setTableModel();
         textoAdv.setVisible(false);
         textoAdv2.setVisible(false);
+        jPanel1.setFocusable(true);
 //        getCodes();
     }
 
@@ -66,7 +67,6 @@ public class FramePV extends javax.swing.JFrame {
 //        } catch (SQLException e) {
 //        }
 //    }
-    
     public void setMonth(String fechaC) {
         String[] dato = fechaC.split("/");
         String dia = dato[0];
@@ -171,13 +171,28 @@ public class FramePV extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
         getContentPane().setLayout(null);
 
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
         jPanel1.setLayout(null);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(27, 58, 68));
-        jLabel3.setText("Punto de Venta - Tiendita GOOR2");
+        jLabel3.setText("Punto de Venta - Tiendita GOR2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(390, 40, 580, 40);
 
@@ -228,6 +243,11 @@ public class FramePV extends javax.swing.JFrame {
         jScrollPane1.setBounds(50, 120, 980, 430);
 
         textoVenta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        textoVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textoVentaMouseClicked(evt);
+            }
+        });
         textoVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textoVentaKeyPressed(evt);
@@ -386,6 +406,7 @@ public class FramePV extends javax.swing.JFrame {
             } else {
                 textoAdv.setVisible(false);
                 textoAdv2.setVisible(false);
+                textoVenta.setText("");
                 if (isExist(nombre)) {
                     int row = getRowDuplicated(nombre);
                     String cant = tablaVenta.getValueAt(row, 1).toString();
@@ -509,7 +530,7 @@ public class FramePV extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_salirActionPerformed
 
-    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+    public void borrar() {
         if (tablaVenta.getSelectionModel().isSelectionEmpty()) {
             JOptionPane.showMessageDialog(null, "Seleccione una producto para eliminar", "ATENCIÓN", WARNING_MESSAGE);
         } else {
@@ -518,9 +539,13 @@ public class FramePV extends javax.swing.JFrame {
             model.removeRow(selectedRow);
             total();
         }
+    }
+
+    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+        borrar();
     }//GEN-LAST:event_borrarActionPerformed
 
-    private void venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderActionPerformed
+    public void venta() {
         if (tablaVenta.getRowCount() > 0) {
             ImageIcon icon = new ImageIcon(getClass().getResource("/images/rsz_pulgar2.png"));
             JOptionPane.showMessageDialog(null, "Venta registrada con éxito!", "VENTA COMPLETADA", INFORMATION_MESSAGE, icon);
@@ -532,6 +557,10 @@ public class FramePV extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No hay productos marcados para vender.", "AVISO", WARNING_MESSAGE);
         }
+    }
+
+    private void venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderActionPerformed
+        venta();
 //        FramePV v = new FramePV();
 //        v.setVisible(true);
 //        this.dispose();
@@ -549,9 +578,54 @@ public class FramePV extends javax.swing.JFrame {
                 + "  \n•Para borrar un producto de la lista de la venta, es necesario que seleccione primero la columna y después presione el botón BORRAR.\n"
                 + "•Para terminar la venta, es necesario que al menos exista un producto marcado.\n"
                 + "•IMPORTANTE: Un espacio en el texto del campo de venta cuenta como un carácter, por lo que sí deja un espacio al principio, al final o entre medio de los caracteres, el sistema no encontrará el producto.\n"
+                + "•Existen atajos con el teclado que sustituyen la funcionalidad de los botones\n"
+                + "    La tecla 'p' para terminar la venta\n"
+                + "    La tecla 'b' para borrar un producto (es necesario que este seleccionado)\n"
+                + "    La tecla 'esc' para borrar el ultimo producto insertado a la venta\n"
                 + "•Cualquier falla en el sistema, contacte al administrador.";
         JOptionPane.showMessageDialog(null, msg, "GUIA DE USO", INFORMATION_MESSAGE);
     }//GEN-LAST:event_ayudaActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_P:
+                venta();
+                break;
+            case KeyEvent.VK_ESCAPE:
+                borrarUltimo();
+                break;
+            case KeyEvent.VK_B:
+                borrar();
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        jPanel1.setFocusable(true);
+        textoVenta.setFocusable(false);
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void textoVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoVentaMouseClicked
+        jPanel1.setFocusable(false);
+        textoVenta.setFocusable(true);
+    }//GEN-LAST:event_textoVentaMouseClicked
+
+    public void borrarUltimo() {
+        int rows = tablaVenta.getRowCount();
+        if (rows > 0) {
+            DefaultTableModel model = (DefaultTableModel) tablaVenta.getModel();
+            model.removeRow(rows - 1);
+            total();
+        } else {
+
+        }
+    }
 
     /**
      * @param args the command line arguments
