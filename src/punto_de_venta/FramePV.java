@@ -145,6 +145,9 @@ public class FramePV extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        vayuda = new javax.swing.JDialog();
+        bayuda = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         fecha = new javax.swing.JLabel();
@@ -166,6 +169,29 @@ public class FramePV extends javax.swing.JFrame {
         textoAdv = new javax.swing.JLabel();
         textoAdv2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+
+        vayuda.setLocationByPlatform(true);
+        vayuda.setMaximumSize(new java.awt.Dimension(885, 735));
+        vayuda.setMinimumSize(new java.awt.Dimension(885, 735));
+        vayuda.setModal(true);
+        vayuda.setPreferredSize(new java.awt.Dimension(885, 735));
+        vayuda.setResizable(false);
+        vayuda.getContentPane().setLayout(null);
+
+        bayuda.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        bayuda.setText("Aceptar");
+        bayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bayudaActionPerformed(evt);
+            }
+        });
+        vayuda.getContentPane().add(bayuda);
+        bayuda.setBounds(370, 630, 100, 40);
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ayuda.png"))); // NOI18N
+        jLabel7.setName(""); // NOI18N
+        vayuda.getContentPane().add(jLabel7);
+        jLabel7.setBounds(0, 0, 870, 700);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
@@ -200,7 +226,7 @@ public class FramePV extends javax.swing.JFrame {
         fecha.setForeground(new java.awt.Color(51, 51, 51));
         fecha.setText("fecha");
         jPanel1.add(fecha);
-        fecha.setBounds(120, 30, 180, 24);
+        fecha.setBounds(120, 30, 180, 30);
 
         hora.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         hora.setForeground(new java.awt.Color(51, 51, 51));
@@ -212,6 +238,7 @@ public class FramePV extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(30, 20, 80, 70);
 
+        tablaVenta.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         tablaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -242,7 +269,7 @@ public class FramePV extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(50, 120, 980, 430);
 
-        textoVenta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        textoVenta.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         textoVenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 textoVentaMouseClicked(evt);
@@ -350,7 +377,7 @@ public class FramePV extends javax.swing.JFrame {
         textoAdv.setForeground(new java.awt.Color(255, 51, 51));
         textoAdv.setText("NO SE ENCONTRO PRODUCTO");
         jPanel1.add(textoAdv);
-        textoAdv.setBounds(1040, 590, 240, 50);
+        textoAdv.setBounds(1040, 590, 250, 50);
 
         textoAdv2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         textoAdv2.setForeground(new java.awt.Color(255, 51, 51));
@@ -568,22 +595,9 @@ public class FramePV extends javax.swing.JFrame {
 
     private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed
 //        guia v = new guia();
-//        v.setVisible(true);
-        String msg = "Funcionamiento del sistema:\n"
-                + "  •Para poder realizar una venta, es necesario introducir el código del producto y posteriormente presionar la tecla ENTER estando el texto de venta seleccionado. Los códigos en este sistema son de 13 dígitos (EAN-13). Puede utilizar escáner y leer códigos de barras.\n"
-                + "  •Si desea marcar más de una unidad de algun producto es necesario que agregue el carácter (*), puede usar las siguientes combinaciones:\n"
-                + "      XXXXXXXXXXXXX*5 → para 5 unidades del producto con código XX..\n"
-                + "      5*XXXXXXXXXXXXX → para 5 unidades del producto con codigo XX..\n"
-                + "  ****Cualquier otra combinación no funcionara.****\n"
-                + "  \n•Para borrar un producto de la lista de la venta, es necesario que seleccione primero la columna y después presione el botón BORRAR.\n"
-                + "•Para terminar la venta, es necesario que al menos exista un producto marcado.\n"
-                + "•IMPORTANTE: Un espacio en el texto del campo de venta cuenta como un carácter, por lo que sí deja un espacio al principio, al final o entre medio de los caracteres, el sistema no encontrará el producto.\n"
-                + "•Existen atajos con el teclado que sustituyen la funcionalidad de los botones\n"
-                + "    La tecla 'p' para terminar la venta\n"
-                + "    La tecla 'b' para borrar un producto (es necesario que este seleccionado)\n"
-                + "    La tecla 'esc' para borrar el ultimo producto insertado a la venta\n"
-                + "•Cualquier falla en el sistema, contacte al administrador.";
-        JOptionPane.showMessageDialog(null, msg, "GUIA DE USO", INFORMATION_MESSAGE);
+        vayuda.setLocationRelativeTo(null);
+        vayuda.setVisible(true);
+
     }//GEN-LAST:event_ayudaActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -615,6 +629,11 @@ public class FramePV extends javax.swing.JFrame {
         jPanel1.setFocusable(false);
         textoVenta.setFocusable(true);
     }//GEN-LAST:event_textoVentaMouseClicked
+
+    private void bayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bayudaActionPerformed
+        // TODO add your handling code here:
+        vayuda.hide();
+    }//GEN-LAST:event_bayudaActionPerformed
 
     public void borrarUltimo() {
         int rows = tablaVenta.getRowCount();
@@ -664,6 +683,7 @@ public class FramePV extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ayuda;
+    private javax.swing.JButton bayuda;
     private javax.swing.JButton borrar;
     private javax.swing.JLabel eTotal;
     private javax.swing.JLabel fecha;
@@ -674,6 +694,7 @@ public class FramePV extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -683,6 +704,7 @@ public class FramePV extends javax.swing.JFrame {
     private javax.swing.JLabel textoAdv;
     private javax.swing.JLabel textoAdv2;
     private javax.swing.JTextField textoVenta;
+    private javax.swing.JDialog vayuda;
     private javax.swing.JButton vender;
     // End of variables declaration//GEN-END:variables
 }
